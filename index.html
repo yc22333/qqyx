@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>球球英雄 - 官方下载</title>
+    <meta name="description" content="球球英雄官方网站 - 三分钟一局，好玩不能停！">
+    <link rel="icon" href="./images/app-icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0e1a;
+            color: #e0e6f0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        ::-webkit-scrollbar { width: 0; height: 0; display: none; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: transparent; }
+
+        html { scrollbar-width: none; -ms-overflow-style: none; }
+
+        #stars-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            padding: 120px 24px 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .download-card {
+            position: relative;
+            max-width: 1080px;
+            width: 100%;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(100, 180, 255, 0.16), rgba(66, 230, 149, 0.12)), rgba(12, 18, 34, 0.72);
+            border: 1.5px solid rgba(100, 180, 255, 0.4);
+            border-radius: 28px;
+            padding: 48px;
+            display: flex;
+            gap: 48px;
+            align-items: flex-start;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(100, 180, 255, 0.08);
+        }
+
+        .dl-left {
+            flex: 0 0 240px;
+            text-align: center;
+        }
+        .app-icon-wrap {
+            position: relative;
+            width: 120px; height: 120px;
+            margin: 0 auto 20px;
+            padding: 6px;
+            background: rgba(8, 14, 28, 0.75);
+            border: 1px solid rgba(0, 245, 212, 0.35);
+            border-radius: 28px;
+            box-shadow: 0 0 0 2px rgba(0, 245, 212, 0.4), 0 0 24px rgba(0, 245, 212, 0.3);
+            animation: iconPulse 3.2s ease-in-out infinite;
+        }
+        .app-icon-wrap img {
+            width: 100%; height: 100%;
+            border-radius: 22px;
+            object-fit: cover;
+            display: block;
+        }
+        @keyframes iconPulse {
+            0%, 100% { box-shadow: 0 0 0 2px rgba(0, 245, 212, 0.45), 0 0 24px rgba(0, 245, 212, 0.35), 0 0 48px rgba(123, 97, 255, 0.15); }
+            50% { box-shadow: 0 0 0 2px rgba(123, 97, 255, 0.55), 0 0 32px rgba(123, 97, 255, 0.4), 0 0 56px rgba(0, 245, 212, 0.2); }
+        }
+        .app-title {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #d4af37, #0066ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .app-meta {
+            font-size: 15px;
+            color: #7788aa;
+            line-height: 2;
+            margin-bottom: 24px;
+        }
+        .qr-section img {
+            width: 100px; height: 100px;
+            border: 2px solid rgba(100, 180, 255, 0.3);
+            border-radius: 12px;
+            background: #fff;
+            padding: 5px;
+            box-shadow: 0 0 16px rgba(100, 180, 255, 0.2);
+        }
+        .qr-section .tip {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #667799;
+        }
+
+        .dl-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .dl-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.25s, box-shadow 0.25s;
+            overflow: hidden;
+        }
+        .dl-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 45%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            animation: shimmer 2.8s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 120%; }
+        }
+        .dl-btn:hover { transform: translateY(-3px); }
+        .dl-btn.android {
+            background: linear-gradient(135deg, #00c9a7, #00f5d4, #7b61ff);
+            box-shadow: 0 0 20px rgba(0, 245, 212, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+        .dl-btn.android:hover {
+            box-shadow: 0 0 32px rgba(0, 245, 212, 0.7), 0 10px 28px rgba(0, 0, 0, 0.4);
+        }
+        .dl-btn.ios {
+            background: linear-gradient(135deg, #ff2d95, #ff6bcb, #7b61ff);
+            box-shadow: 0 0 20px rgba(255, 45, 149, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+        .dl-btn.ios:hover {
+            box-shadow: 0 0 32px rgba(255, 45, 149, 0.7), 0 10px 28px rgba(0, 0, 0, 0.4);
+        }
+        .dl-btn .icon { font-size: 18px; }
+
+        .dl-sub {
+            display: flex;
+            gap: 10px;
+        }
+        .dl-sub-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            background: rgba(100, 180, 255, 0.08);
+            border: 1px solid rgba(100, 180, 255, 0.2);
+            color: #88aadd;
+            transition: all 0.25s;
+            cursor: pointer;
+        }
+        .dl-sub-btn:hover {
+            background: rgba(100, 180, 255, 0.18);
+            border-color: rgba(100, 180, 255, 0.4);
+            color: #bcd4f0;
+        }
+        .dl-sub-btn.qq {
+            background: rgba(255, 166, 0, 0.08);
+            border-color: rgba(255, 166, 0, 0.25);
+            color: #ffb347;
+        }
+        .dl-sub-btn.qq:hover {
+            background: rgba(255, 166, 0, 0.18);
+            border-color: rgba(255, 166, 0, 0.5);
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(100, 180, 255, 0.25), transparent);
+            margin: 6px 0;
+        }
+
+        .notice-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, rgba(255, 166, 0, 0.1), rgba(255, 45, 149, 0.08));
+            border: 1px solid rgba(255, 166, 0, 0.35);
+            border-radius: 12px;
+            margin-bottom: 6px;
+            animation: noticeGlow 2.6s ease-in-out infinite;
+        }
+        @keyframes noticeGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 166, 0, 0.2); }
+            50% { box-shadow: 0 0 18px 2px rgba(255, 166, 0, 0.35); }
+        }
+        .notice-icon { font-size: 20px; flex-shrink: 0; }
+        .notice-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #ffc97a;
+            line-height: 1.6;
+        }
+
+        .cdk-section .section-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: #64b5f6;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cdk-section .section-label::before {
+            content: '🎁';
+            font-size: 16px;
+        }
+        .cdk-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .cdk-card {
+            background: rgba(66, 230, 149, 0.04);
+            border: 1px solid rgba(66, 230, 149, 0.12);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.25s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .cdk-card:hover {
+            background: rgba(66, 230, 149, 0.1);
+            border-color: rgba(66, 230, 149, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(66, 230, 149, 0.15);
+        }
+        .cdk-card .code {
+            font-family: 'Courier New', monospace;
+            font-size: 17px;
+            font-weight: 800;
+            color: #42e695;
+            background: rgba(66, 230, 149, 0.12);
+            padding: 4px 10px;
+            border-radius: 6px;
+            letter-spacing: 1px;
+            user-select: all;
+            flex-shrink: 0;
+        }
+        .cdk-card .desc {
+            font-size: 13px;
+            color: #8899bb;
+            flex: 1;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .cdk-card .copy-btn {
+            flex-shrink: 0;
+            padding: 4px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid rgba(66, 230, 149, 0.3);
+            border-radius: 8px;
+            background: rgba(66, 230, 149, 0.08);
+            color: #42e695;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .cdk-card .copy-btn:hover {
+            background: rgba(66, 230, 149, 0.2);
+            border-color: #42e695;
+        }
+        .cdk-card .copy-btn.copied {
+            background: rgba(66, 230, 149, 0.3);
+            border-color: #42e695;
+            color: #fff;
+        }
+
+        .announce-section {
+            position: relative;
+            z-index: 1;
+            padding: 60px 24px 40px;
+            text-align: center;
+        }
+        .announce-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 48px;
+            border-radius: 60px;
+            background: linear-gradient(135deg, rgba(100, 180, 255, 0.12), rgba(66, 230, 149, 0.08));
+            border: 1.5px solid rgba(100, 180, 255, 0.3);
+            color: #88c0f0;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .announce-btn:hover {
+            background: linear-gradient(135deg, rgba(100, 180, 255, 0.22), rgba(66, 230, 149, 0.15));
+            border-color: rgba(100, 180, 255, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(100, 180, 255, 0.2);
+            color: #c0e0ff;
+        }
+        .announce-btn .arrow {
+            transition: transform 0.3s;
+        }
+        .announce-btn:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        .footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid rgba(100, 180, 255, 0.06);
+            padding: 32px 24px;
+            text-align: center;
+            font-size: 15px;
+            color: #445566;
+        }
+        .footer .links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+        .footer .links a {
+            color: #667799;
+            transition: color 0.2s;
+        }
+        .footer .links a:hover { color: #64b5f6; }
+
+        /* ========== 响应式布局 ========== */
+
+        /* 平板横屏 / 小笔记本 */
+        @media (max-width: 1100px) {
+            .download-card {
+                max-width: 95%;
+                padding: 40px 32px;
+                gap: 36px;
+            }
+        }
+
+        /* 平板竖屏 — 卡片竖排 */
+        @media (max-width: 860px) {
+            .hero { padding: 90px 12px 48px; }
+
+            .download-card {
+                flex-direction: column;
+                align-items: center;
+                padding: 32px 20px;
+                gap: 28px;
+                max-width: 520px;
+            }
+            .dl-left {
+                flex: none;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .dl-right { width: 100%; }
+            .app-icon-wrap { width: 96px; height: 96px; border-radius: 22px; }
+            .app-title { font-size: 22px; }
+            .qr-section { display: flex; flex-direction: column; align-items: center; }
+
+            .cdk-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .dl-sub { flex-wrap: wrap; }
+            .dl-sub-btn { flex: 1 1 calc(33.3% - 8px); min-width: 90px; }
+            .announce-section { padding: 36px 12px 20px; }
+        }
+
+        /* 手机大屏 */
+        @media (max-width: 600px) {
+            .hero { padding: 76px 8px 36px; }
+            .download-card { padding: 24px 14px; gap: 20px; border-radius: 20px; }
+            .app-icon-wrap { width: 80px; height: 80px; border-radius: 18px; }
+            .app-title { font-size: 22px; }
+            .app-meta { font-size: 14px; line-height: 1.8; margin-bottom: 16px; }
+            .qr-section img { width: 80px; height: 80px; }
+
+            .dl-btn { padding: 13px 16px; font-size: 17px; }
+            .dl-sub-btn { flex: 1 1 100%; }
+            .reg-tip { font-size: 13px; padding: 10px 14px; }
+
+            .cdk-grid { grid-template-columns: 1fr; gap: 8px; }
+            .cdk-card { flex-wrap: wrap; padding: 10px 12px; justify-content: space-between; align-items: center; }
+            .cdk-card .code { font-size: 15px; margin-right: auto; }
+            .cdk-card .desc { flex: 1 1 100%; order: 3; margin-top: 4px; font-size: 13px; }
+            .cdk-card .copy-btn { font-size: 12px; padding: 4px 10px; margin-left: auto; }
+
+            .announce-btn { padding: 14px 24px; font-size: 16px; width: 100%; justify-content: center; }
+        }
+
+        /* 手机小屏 */
+        @media (max-width: 400px) {
+            .hero { padding: 64px 6px 28px; }
+            .download-card { padding: 20px 10px; gap: 16px; }
+            .app-icon-wrap { width: 72px; height: 72px; }
+            .app-title { font-size: 20px; }
+            .dl-btn { padding: 12px 14px; font-size: 16px; }
+            .reg-tip { font-size: 12px; }
+            .cdk-card .code { font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="stars-canvas"></canvas>
+
+    <section class="hero" id="home">
+
+        <div class="download-card">
+            <div class="dl-left">
+                <div class="app-icon-wrap">
+                    <img src="./images/app-icon.png" alt="球球英雄">
+                </div>
+                <div class="app-title">球球英雄</div>
+                <div class="app-meta">
+                    版本 19.3.0<br>
+                    大小 1725 MB<br>
+                    更新 <span id="today-date">2026-10-01</span>
+                </div>
+                <div class="qr-section">
+                    <img src="./images/qrcode.png" alt="扫码下载">
+                    <div class="tip">扫码下载</div>
+                </div>
+            </div>
+
+            <div class="dl-right">
+                <div class="notice-bar">
+                    <span class="notice-icon">⚠️</span>
+                    <span class="notice-text">账号需在本站注册 · 请点击下方「注册」按钮创建账号，商城购买也在本站完成</span>
+                </div>
+
+                <a href="https://media.meilinvps.com/f.php?id=OgRl9byJHDDp.apk"
+                   class="dl-btn android" rel="noopener">
+                    <span class="icon">&#x2b07;</span>
+                    <span>Android 下载</span>
+                </a>
+                <a href="itms-services://?action=download-manifest&url=https://xgame7.ru/qq2/qq.plist"
+                   class="dl-btn ios">
+                    <span class="icon">&#x2b07;</span>
+                    <span>iOS 下载</span>
+                </a>
+
+                <div class="dl-sub">
+                    <a href="https://qm.qq.com/q/SE8wBMsHo4" class="dl-sub-btn qq" target="_blank" rel="noopener">QQ群：1127734420</a>
+                    <a href="http://b.myokcdn.ru/#/register?invite_code=zyg666" class="dl-sub-btn" rel="noopener">商城</a>
+                    <a href="http://b.myokcdn.ru/#/register?invite_code=zyg666" class="dl-sub-btn" rel="noopener">注册</a>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="cdk-section">
+                    <div class="section-label">可用兑换码 · 一键复制</div>
+                    <div class="cdk-grid">
+                        <div class="cdk-card">
+                            <code class="code">GJQQ111</code>
+                            <span class="desc">点券×5888 · 全联动自选×4</span>
+                            <button class="copy-btn" onclick="copyCDK('GJQQ111')">复制</button>
+                        </div>
+                        <div class="cdk-card">
+                            <code class="code">GJQQ222</code>
+                            <span class="desc">钻石×98888 · 金币×128万</span>
+                            <button class="copy-btn" onclick="copyCDK('GJQQ222')">复制</button>
+                        </div>
+                        <div class="cdk-card">
+                            <code class="code">GJQQ333</code>
+                            <span class="desc">万能宝券×38 · 传说球球×18</span>
+                            <button class="copy-btn" onclick="copyCDK('GJQQ333')">复制</button>
+                        </div>
+                        <div class="cdk-card">
+                            <code class="code">GJQQSJFL</code>
+                            <span class="desc">点券×1888 · 进场宝箱×1</span>
+                            <button class="copy-btn" onclick="copyCDK('GJQQSJFL')">复制</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="announce-section">
+            <a href="https://a.myokcdn.ru/announcements.html?id=8" class="announce-btn" target="_blank" rel="noopener">
+                📢 查看最新公告
+                <span class="arrow">→</span>
+            </a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="links">
+            <a href="#home">首页</a>
+            <a href="https://a.myokcdn.ru/announcements.html?id=8" target="_blank" rel="noopener">公告</a>
+            <a href="https://qm.qq.com/q/SE8wBMsHo4" target="_blank" rel="noopener">QQ群</a>
+        </div>
+        <p>&copy; 2026 球球英雄. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        (function setBeijingDate() {
+            const now = new Date();
+            const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+            const bj = new Date(utcMs + 8 * 3600 * 1000);
+            const y = bj.getFullYear();
+            const m = String(bj.getMonth() + 1).padStart(2, '0');
+            const d = String(bj.getDate()).padStart(2, '0');
+            const el = document.getElementById('today-date');
+            if (el) el.textContent = `${y}-${m}-${d}`;
+        })();
+
+        (function initStars() {
+            const canvas = document.getElementById('stars-canvas');
+            if (!canvas || !canvas.getContext) return;
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+            let w, h, dpr;
+            function resize() {
+                dpr = window.devicePixelRatio || 1;
+                w = window.innerWidth || 1;
+                h = window.innerHeight || 1;
+                canvas.width = Math.max(1, Math.round(w * dpr));
+                canvas.height = Math.max(1, Math.round(h * dpr));
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                ctx.clearRect(0, 0, w, h);
+            }
+            window.addEventListener('resize', resize, { passive: true });
+            window.addEventListener('orientationchange', resize, { passive: true });
+            resize();
+            for (let i = 0; i < 180; i++) {
+                stars.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 1.6 + 0.3,
+                    a: Math.random() * 0.6 + 0.2,
+                    speed: Math.random() * 0.3 + 0.05,
+                });
+            }
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                for (const s of stars) {
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(180, 210, 255, ${s.a})`;
+                    ctx.fill();
+                    s.y -= s.speed * 0.3;
+                    if (s.y < -10) {
+                        s.y = h + 10;
+                        s.x = Math.random() * w;
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+
+        function copyCDK(code) {
+            const showCopied = () => {
+                const btns = document.querySelectorAll('.copy-btn');
+                for (const btn of btns) {
+                    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(code)) {
+                        const original = btn.textContent;
+                        btn.textContent = '已复制 ✓';
+                        btn.classList.add('copied');
+                        setTimeout(() => {
+                            btn.textContent = original;
+                            btn.classList.remove('copied');
+                        }, 2000);
+                        break;
+                    }
+                }
+            };
+            // 优先：在用户点击手势栈内同步执行 execCommand（移动端需要 textarea 在可视区域内）
+            const legacyCopy = () => {
+                const ta = document.createElement('textarea');
+                ta.value = code;
+                ta.setAttribute('readonly', '');
+                // 放在视口右下角但透明，确保移动端 select+execCommand 有效
+                ta.style.cssText = 'position:fixed;right:0;bottom:0;width:2em;height:2em;opacity:0;border:0;padding:0;margin:0;z-index:9999;';
+                document.body.appendChild(ta);
+                if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+                ta.focus();
+                ta.select();
+                ta.setSelectionRange(0, ta.value.length);
+                let copied = false;
+                try { copied = document.execCommand('copy'); } catch (e) { copied = false; }
+                document.body.removeChild(ta);
+                return copied;
+            };
+
+            const pc = legacyCopy();
+            if (pc || !navigator.clipboard || !navigator.clipboard.writeText) {
+                showCopied();
+            } else {
+                navigator.clipboard.writeText(code).then(showCopied).catch(showCopied);
+            }
+        }
+    </script>
+</body>
+</html>
