@@ -609,24 +609,6 @@
                     }
                 }
             };
-            // 同步执行 execCommand，确保在用户点击手势栈内，避免被浏览器拒绝
-            const ta = document.createElement('textarea');
-            ta.value = code;
-            ta.setAttribute('readonly', '');
-            ta.style.position = 'fixed';
-            ta.style.top = '-9999px';
-            ta.style.opacity = '0';
-            document.body.appendChild(ta);
-            ta.focus();
-            ta.select();
-            ta.setSelectionRange(0, ta.value.length); // 兼容移动端
-            let copied = false;
-            try {
-                copied = document.execCommand('copy');
-            } catch (e) {
-                copied = false;
-            }
-            ta.remove();
             // 优先：在用户点击手势栈内同步执行 execCommand（移动端需要 textarea 在可视区域内）
             const legacyCopy = () => {
                 const ta = document.createElement('textarea');
@@ -640,14 +622,11 @@
                 ta.select();
                 ta.setSelectionRange(0, ta.value.length);
                 let copied = false;
-                try { copied = document.execCommand('copy'); } catch (e) { copied = false; }
+                尝试 { 已复制 = 文档.执行命令('复制'); } 捕获 (e) { 已复制 = 假; }
                 document.body.removeChild(ta);
                 return copied;
             };
 
-            if (!copied && navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(code).then(showCopied).catch(showCopied);
-            } else {
             const pc = legacyCopy();
             if (pc || !navigator.clipboard || !navigator.clipboard.writeText) {
                 showCopied();
