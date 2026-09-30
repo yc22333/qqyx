@@ -46,10 +46,7 @@
         .hero-bg {
             position: absolute;
             inset: 0;
-            background:
-                linear-gradient(rgba(10, 14, 26, 0.25), rgba(10, 14, 26, 0.45)),
-                url('./images/game-poster.png') center center / cover no-repeat;
-                url('./images/game-poster.webp') center center / cover no-repeat;
+            background: radial-gradient(1200px 700px at 50% 35%, rgba(100, 180, 255, 0.08), transparent 70%);
             pointer-events: none;
         }
 
@@ -605,7 +602,7 @@
             const showCopied = () => {
                 const btns = document.querySelectorAll('.copy-btn');
                 对于 (常量btn在btns中){
-                    如果 (btn.getAttribute('onclick') && 按钮.getAttribute('onclick').包含(代码)) {
+                    如果 (btn.getAttribute('onclick') && btn.getAttribute('onclick').包含(代码)) {
                         const original = btn.textContent;
                         btn.textContent = '已复制 ✓';
                         btn.classList.add('copied');
