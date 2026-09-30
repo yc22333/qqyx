@@ -2,15 +2,12 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>球球英雄 - 官方下载</title>
+    <meta name="description" content="球球英雄官方网站 - 三分钟一局，好玩不能停！">
+    <link rel="icon" href="./images/app-icon.png">
     <style>
-        /* ===== 全局重置 & 基础样式 ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
@@ -20,698 +17,290 @@
             overflow-x: hidden;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+        a { text-decoration: none; color: inherit; }
 
-        /* ===== 滚动条美化 ===== */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0e1a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #2a3a6a;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3a5a9a;
-        }
+        ::-webkit-scrollbar { width: 0; height: 0; display: none; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: transparent; }
 
-        /* ===== 星空背景粒子 ===== */
+        html { scrollbar-width: none; -ms-overflow-style: none; }
+
         #stars-canvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
             z-index: 0;
             pointer-events: none;
         }
 
-        /* ===== 导航栏 ===== */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            background: rgba(10, 14, 26, 0.85);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(100, 180, 255, 0.12);
-            padding: 0 48px;
-            height: 68px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: background 0.3s;
-        }
-
-        .navbar .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 22px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #64b5f6, #42e695);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-        }
-
-        .navbar .logo .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #64b5f6, #42e695);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            -webkit-text-fill-color: #fff;
-            flex-shrink: 0;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-            align-items: center;
-        }
-
-        .nav-links a {
-            font-size: 15px;
-            color: #8899bb;
-            transition: color 0.2s;
-            position: relative;
-            padding: 4px 0;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #64b5f6, #42e695);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #e0e6f0;
-        }
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 4px;
-        }
-        .hamburger span {
-            width: 26px;
-            height: 2px;
-            background: #8899bb;
-            border-radius: 2px;
-            transition: 0.3s;
-        }
-
-        /* ===== Hero 首屏 ===== */
         .hero {
             position: relative;
             z-index: 1;
             min-height: 100vh;
+            padding: 120px 24px 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+        }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(rgba(10, 14, 26, 0.25), rgba(10, 14, 26, 0.45)),
+                url('./images/game-poster.png') center center / cover no-repeat;
+            pointer-events: none;
+        }
+
+        .download-card {
+            position: relative;
+            max-width: 1080px;
+            width: 100%;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(100, 180, 255, 0.16), rgba(66, 230, 149, 0.12)), rgba(12, 18, 34, 0.72);
+            border: 1.5px solid rgba(100, 180, 255, 0.4);
+            border-radius: 28px;
+            padding: 48px;
+            display: flex;
+            gap: 48px;
+            align-items: flex-start;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(100, 180, 255, 0.08);
+        }
+
+        .dl-left {
+            flex: 0 0 240px;
             text-align: center;
-            padding: 120px 24px 80px;
         }
-
-        .hero .badge {
-            display: inline-block;
-            padding: 6px 20px;
-            border-radius: 20px;
-            background: rgba(100, 180, 255, 0.12);
-            border: 1px solid rgba(100, 180, 255, 0.25);
-            font-size: 13px;
-            color: #64b5f6;
+        .app-icon-wrap {
+            position: relative;
+            width: 120px; height: 120px;
+            margin: 0 auto 20px;
+            padding: 6px;
+            background: rgba(8, 14, 28, 0.75);
+            border: 1px solid rgba(0, 245, 212, 0.35);
+            border-radius: 28px;
+            box-shadow: 0 0 0 2px rgba(0, 245, 212, 0.4), 0 0 24px rgba(0, 245, 212, 0.3);
+            animation: iconPulse 3.2s ease-in-out infinite;
+        }
+        .app-icon-wrap img {
+            width: 100%; height: 100%;
+            border-radius: 22px;
+            object-fit: cover;
+            display: block;
+        }
+        @keyframes iconPulse {
+            0%, 100% { box-shadow: 0 0 0 2px rgba(0, 245, 212, 0.45), 0 0 24px rgba(0, 245, 212, 0.35), 0 0 48px rgba(123, 97, 255, 0.15); }
+            50% { box-shadow: 0 0 0 2px rgba(123, 97, 255, 0.55), 0 0 32px rgba(123, 97, 255, 0.4), 0 0 56px rgba(0, 245, 212, 0.2); }
+        }
+        .app-title {
+            font-size: 24px;
+            font-weight: 800;
             letter-spacing: 2px;
-            margin-bottom: 24px;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.4rem, 7vw, 4.8rem);
-            font-weight: 900;
-            line-height: 1.15;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 .highlight {
-            background: linear-gradient(135deg, #64b5f6, #42e695);
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #d4af37, #0066ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            color: #8899bb;
-            max-width: 600px;
-            margin-bottom: 40px;
+        .app-meta {
+            font-size: 13px;
+            color: #7788aa;
+            line-height: 1.9;
+            margin-bottom: 24px;
+        }
+        .qr-section img {
+            width: 100px; height: 100px;
+            border: 2px solid rgba(100, 180, 255, 0.3);
+            border-radius: 12px;
+            background: #fff;
+            padding: 5px;
+            box-shadow: 0 0 16px rgba(100, 180, 255, 0.2);
+        }
+        .qr-section .tip {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #667799;
         }
 
-        .hero-actions {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        /* ===== QQ群入口（首屏显眼位置） ===== */
-        .hero-qq-group {
-            margin-top: 16px;
-            margin-bottom: 8px;
-            display: inline-flex;
-            align-items: center;
-            gap: 14px;
-            padding: 16px 40px;
-            border-radius: 60px;
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.15), rgba(255, 166, 0, 0.10));
-            border: 2px solid rgba(255, 166, 0, 0.35);
-            backdrop-filter: blur(8px);
-            transition: all 0.35s;
-            font-size: 18px;
-            font-weight: 700;
-            color: #ffb347;
-            text-shadow: 0 0 20px rgba(255, 166, 0, 0.15);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            animation: qqPulse 2.5s ease-in-out infinite;
-        }
-
-        .hero-qq-group::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 60px;
-            background: linear-gradient(135deg, rgba(255, 166, 0, 0.08), transparent);
-            opacity: 0;
-            transition: opacity 0.35s;
-        }
-
-        .hero-qq-group:hover {
-            transform: translateY(-3px) scale(1.02);
-            border-color: rgba(255, 166, 0, 0.7);
-            box-shadow: 0 8px 40px rgba(255, 166, 0, 0.25);
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.25), rgba(255, 166, 0, 0.18));
-        }
-
-        .hero-qq-group:hover::before {
-            opacity: 1;
-        }
-
-        .hero-qq-group .qq-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff6b00, #ffa600);
-            color: #fff;
-            font-size: 20px;
-            font-weight: 800;
-            flex-shrink: 0;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-qq-group .qq-text {
+        .dl-right {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .dl-btn {
             position: relative;
-            z-index: 1;
-        }
-
-        .hero-qq-group .qq-text .label {
-            font-size: 12px;
-            font-weight: 400;
-            color: rgba(255, 180, 70, 0.7);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .hero-qq-group .qq-text .number {
-            font-size: 20px;
-            font-weight: 800;
-            color: #ffb347;
-            letter-spacing: 1px;
-        }
-
-        .hero-qq-group .qq-arrow {
-            font-size: 18px;
-            color: rgba(255, 180, 70, 0.6);
-            transition: transform 0.3s;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-qq-group:hover .qq-arrow {
-            transform: translateX(4px);
-        }
-
-        @keyframes qqPulse {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(255, 166, 0, 0.15);
-            }
-            50% {
-                box-shadow: 0 0 30px 6px rgba(255, 166, 0, 0.10);
-            }
-        }
-
-        /* QQ群响应式 */
-        @media (max-width: 480px) {
-            .hero-qq-group {
-                padding: 12px 24px;
-                gap: 10px;
-                font-size: 15px;
-                width: 100%;
-                justify-content: center;
-            }
-            .hero-qq-group .qq-icon {
-                width: 32px;
-                height: 32px;
-                font-size: 16px;
-            }
-            .hero-qq-group .qq-text .number {
-                font-size: 16px;
-            }
-        }
-
-        .btn {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 14px 36px;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 14px 28px;
             border-radius: 50px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
             border: none;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: transform 0.25s, box-shadow 0.25s;
+            overflow: hidden;
+        }
+        .dl-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 45%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            animation: shimmer 2.8s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 120%; }
+        }
+        .dl-btn:hover { transform: translateY(-3px); }
+        .dl-btn.android {
+            background: linear-gradient(135deg, #00c9a7, #00f5d4, #7b61ff);
+            box-shadow: 0 0 20px rgba(0, 245, 212, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+        .dl-btn.android:hover {
+            box-shadow: 0 0 32px rgba(0, 245, 212, 0.7), 0 10px 28px rgba(0, 0, 0, 0.4);
+        }
+        .dl-btn.ios {
+            background: linear-gradient(135deg, #ff2d95, #ff6bcb, #7b61ff);
+            box-shadow: 0 0 20px rgba(255, 45, 149, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+        .dl-btn.ios:hover {
+            box-shadow: 0 0 32px rgba(255, 45, 149, 0.7), 0 10px 28px rgba(0, 0, 0, 0.4);
+        }
+        .dl-btn .icon { font-size: 18px; }
+
+        .dl-sub {
+            display: flex;
+            gap: 10px;
+        }
+        .dl-sub-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            background: rgba(100, 180, 255, 0.08);
+            border: 1px solid rgba(100, 180, 255, 0.2);
+            color: #88aadd;
+            transition: all 0.25s;
+            cursor: pointer;
+        }
+        .dl-sub-btn:hover {
+            background: rgba(100, 180, 255, 0.18);
+            border-color: rgba(100, 180, 255, 0.4);
+            color: #bcd4f0;
+        }
+        .dl-sub-btn.qq {
+            background: rgba(255, 166, 0, 0.08);
+            border-color: rgba(255, 166, 0, 0.25);
+            color: #ffb347;
+        }
+        .dl-sub-btn.qq:hover {
+            background: rgba(255, 166, 0, 0.18);
+            border-color: rgba(255, 166, 0, 0.5);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #64b5f6, #42e695);
-            color: #0a0e1a;
-            box-shadow: 0 4px 24px rgba(100, 180, 255, 0.25);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(100, 180, 255, 0.4);
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(100, 180, 255, 0.25), transparent);
+            margin: 6px 0;
         }
 
-        .btn-outline {
-            background: transparent;
+        .notice-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, rgba(255, 166, 0, 0.1), rgba(255, 45, 149, 0.08));
+            border: 1px solid rgba(255, 166, 0, 0.35);
+            border-radius: 12px;
+            margin-bottom: 6px;
+            animation: noticeGlow 2.6s ease-in-out infinite;
+        }
+        @keyframes noticeGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 166, 0, 0.2); }
+            50% { box-shadow: 0 0 18px 2px rgba(255, 166, 0, 0.35); }
+        }
+        .notice-icon { font-size: 18px; flex-shrink: 0; }
+        .notice-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffc97a;
+            line-height: 1.5;
+        }
+
+        .cdk-section .section-label {
+            font-size: 13px;
+            font-weight: 600;
             color: #64b5f6;
-            border: 1.5px solid rgba(100, 180, 255, 0.35);
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .btn-outline:hover {
-            border-color: #64b5f6;
-            background: rgba(100, 180, 255, 0.06);
-            transform: translateY(-2px);
+        .cdk-section .section-label::before {
+            content: '🎁';
+            font-size: 14px;
         }
-
-        /* ===== 通用 Section ===== */
-        .section {
-            position: relative;
-            z-index: 1;
-            padding: 96px 24px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        .section-title h2 {
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            font-weight: 800;
-            margin-bottom: 12px;
-        }
-        .section-title p {
-            color: #667799;
-            font-size: 16px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        .section-title .accent-line {
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, #64b5f6, #42e695);
-            border-radius: 2px;
-            margin: 16px auto 0;
-        }
-
-        /* ===== 快捷入口卡片（下载/商城/注册） ===== */
-        .quick-cards {
+        .cdk-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 28px;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
-
-        .quick-card {
-            background: linear-gradient(145deg, rgba(20, 30, 60, 0.6), rgba(10, 14, 26, 0.8));
-            border: 1px solid rgba(100, 180, 255, 0.08);
-            border-radius: 20px;
-            padding: 40px 28px;
-            text-align: center;
-            transition: all 0.4s;
+        .cdk-card {
+            background: rgba(66, 230, 149, 0.04);
+            border: 1px solid rgba(66, 230, 149, 0.12);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.25s;
+            cursor: pointer;
             position: relative;
             overflow: hidden;
         }
-
-        .quick-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #64b5f6, #42e695);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        .quick-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(100, 180, 255, 0.25);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-        }
-
-        .quick-card:hover::before {
-            opacity: 1;
-        }
-
-        .quick-card .icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin: 0 auto 20px;
-        }
-
-        .quick-card .icon.download {
-            background: rgba(100, 180, 255, 0.12);
-            color: #64b5f6;
-        }
-        .quick-card .icon.shop {
-            background: rgba(66, 230, 149, 0.12);
-            color: #42e695;
-        }
-        .quick-card .icon.register {
-            background: rgba(255, 200, 50, 0.12);
-            color: #ffc832;
-        }
-
-        .quick-card h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .quick-card p {
-            color: #667799;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-        .quick-card .card-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 28px;
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .quick-card .card-btn.blue {
-            background: rgba(100, 180, 255, 0.12);
-            color: #64b5f6;
-            border: 1px solid rgba(100, 180, 255, 0.2);
-        }
-        .quick-card .card-btn.blue:hover {
-            background: rgba(100, 180, 255, 0.2);
-        }
-
-        .quick-card .card-btn.green {
-            background: rgba(66, 230, 149, 0.12);
-            color: #42e695;
-            border: 1px solid rgba(66, 230, 149, 0.2);
-        }
-        .quick-card .card-btn.green:hover {
-            background: rgba(66, 230, 149, 0.2);
-        }
-
-        .quick-card .card-btn.gold {
-            background: rgba(255, 200, 50, 0.12);
-            color: #ffc832;
-            border: 1px solid rgba(255, 200, 50, 0.2);
-        }
-        .quick-card .card-btn.gold:hover {
-            background: rgba(255, 200, 50, 0.2);
-        }
-
-        /* ===== 下载卡片双按钮布局 ===== */
-        .download-btns {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 4px;
-        }
-        .download-btns .card-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 20px;
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        .download-btns .card-btn.android {
-            background: rgba(100, 180, 255, 0.12);
-            color: #64b5f6;
-            border: 1px solid rgba(100, 180, 255, 0.2);
-        }
-        .download-btns .card-btn.android:hover {
-            background: rgba(100, 180, 255, 0.25);
+        .cdk-card:hover {
+            background: rgba(66, 230, 149, 0.1);
+            border-color: rgba(66, 230, 149, 0.3);
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(66, 230, 149, 0.15);
         }
-        .download-btns .card-btn .sub {
-            font-size: 11px;
-            opacity: 0.6;
-            font-weight: 400;
-        }
-
-        /* 下载卡片加宽 */
-        .quick-card.download-card {
-            grid-column: span 1;
-        }
-
-        /* ===== 游戏介绍 ===== */
-        .intro-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            align-items: center;
-        }
-
-        .intro-text h3 {
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-        .intro-text p {
-            color: #8899bb;
-            margin-bottom: 16px;
-            font-size: 15px;
-        }
-
-        .intro-features {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-top: 24px;
-        }
-        .intro-feature-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            color: #aabbdd;
-        }
-        .intro-feature-item .check {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: rgba(66, 230, 149, 0.15);
-            color: #42e695;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            flex-shrink: 0;
-        }
-
-        .intro-visual {
-            position: relative;
-        }
-        .intro-visual .mock-screen {
-            background: linear-gradient(145deg, rgba(20, 30, 60, 0.5), rgba(10, 14, 26, 0.7));
-            border: 1px solid rgba(100, 180, 255, 0.1);
-            border-radius: 20px;
-            padding: 32px;
-            aspect-ratio: 16 / 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        .intro-visual .mock-screen .big-emoji {
-            font-size: 64px;
-            margin-bottom: 16px;
-        }
-        .intro-visual .mock-screen h4 {
-            font-size: 18px;
-            margin-bottom: 8px;
-        }
-        .intro-visual .mock-screen span {
-            color: #667799;
-            font-size: 14px;
-        }
-
-        /* ===== 公告 ===== */
-        .announcement-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .announcement-item {
-            background: rgba(20, 30, 60, 0.4);
-            border: 1px solid rgba(100, 180, 255, 0.06);
-            border-radius: 16px;
-            padding: 28px 32px;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .announcement-item:hover {
-            border-color: rgba(100, 180, 255, 0.15);
-            background: rgba(20, 30, 60, 0.6);
-        }
-
-        .announcement-item .meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-        .announcement-item .tag {
-            padding: 2px 12px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .announcement-item .tag.hot {
-            background: rgba(255, 80, 80, 0.15);
-            color: #ff5050;
-        }
-        .announcement-item .tag.update {
-            background: rgba(100, 180, 255, 0.15);
-            color: #64b5f6;
-        }
-        .announcement-item .tag.event {
-            background: rgba(255, 200, 50, 0.15);
-            color: #ffc832;
-        }
-        .announcement-item .tag.info {
-            background: rgba(66, 230, 149, 0.15);
-            color: #42e695;
-        }
-
-        .announcement-item .date {
-            font-size: 13px;
-            color: #556688;
-        }
-
-        .announcement-item h4 {
-            font-size: 17px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .announcement-item p {
-            font-size: 14px;
-            color: #7788aa;
-            line-height: 1.7;
-        }
-        .announcement-item p + p {
-            margin-top: 6px;
-        }
-
-        /* CDK 行 */
-        .cdk-row {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-            padding: 10px 14px;
-            background: rgba(66, 230, 149, 0.04);
-            border: 1px solid rgba(66, 230, 149, 0.1);
-            border-radius: 10px;
-        }
-        .cdk-code {
+        .cdk-card .code {
             font-family: 'Courier New', monospace;
             font-size: 15px;
-            font-weight: 700;
+            font-weight: 800;
             color: #42e695;
-            background: rgba(66, 230, 149, 0.1);
-            padding: 3px 12px;
+            background: rgba(66, 230, 149, 0.12);
+            padding: 4px 10px;
             border-radius: 6px;
             letter-spacing: 1px;
             user-select: all;
-        }
-        .cdk-desc {
-            flex: 1;
-            font-size: 13px;
-            color: #7799bb;
-            min-width: 120px;
-        }
-        .copy-btn {
             flex-shrink: 0;
-            padding: 5px 16px;
-            font-size: 12px;
+        }
+        .cdk-card .desc {
+            font-size: 11px;
+            color: #8899bb;
+            flex: 1;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .cdk-card .copy-btn {
+            flex-shrink: 0;
+            padding: 4px 12px;
+            font-size: 11px;
             font-weight: 600;
             border: 1px solid rgba(66, 230, 149, 0.3);
             border-radius: 8px;
@@ -720,350 +309,271 @@
             cursor: pointer;
             transition: all 0.25s;
         }
-        .copy-btn:hover {
+        .cdk-card .copy-btn:hover {
             background: rgba(66, 230, 149, 0.2);
             border-color: #42e695;
         }
-        .copy-btn.copied {
+        .cdk-card .copy-btn.copied {
             background: rgba(66, 230, 149, 0.3);
             border-color: #42e695;
             color: #fff;
         }
 
-        /* 自定义置顶公告 */
-        .custom-top {
-            border-color: rgba(255, 200, 50, 0.15) !important;
-            background: rgba(255, 200, 50, 0.03) !important;
+        .announce-section {
+            position: relative;
+            z-index: 1;
+            padding: 60px 24px 40px;
+            text-align: center;
         }
-        .custom-top:hover {
-            border-color: rgba(255, 200, 50, 0.25) !important;
-            background: rgba(255, 200, 50, 0.06) !important;
+        .announce-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 48px;
+            border-radius: 60px;
+            background: linear-gradient(135deg, rgba(100, 180, 255, 0.12), rgba(66, 230, 149, 0.08));
+            border: 1.5px solid rgba(100, 180, 255, 0.3);
+            color: #88c0f0;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
         }
-        .custom-top .tag.hot {
-            background: rgba(255, 200, 50, 0.2) !important;
-            color: #ffc832 !important;
+        .announce-btn:hover {
+            background: linear-gradient(135deg, rgba(100, 180, 255, 0.22), rgba(66, 230, 149, 0.15));
+            border-color: rgba(100, 180, 255, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(100, 180, 255, 0.2);
+            color: #c0e0ff;
+        }
+        .announce-btn .arrow {
+            transition: transform 0.3s;
+        }
+        .announce-btn:hover .arrow {
+            transform: translateX(4px);
         }
 
-        /* ===== 页脚 ===== */
         .footer {
             position: relative;
             z-index: 1;
             border-top: 1px solid rgba(100, 180, 255, 0.06);
-            padding: 40px 24px;
+            padding: 32px 24px;
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
             color: #445566;
         }
-
         .footer .links {
             display: flex;
             justify-content: center;
             gap: 24px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             flex-wrap: wrap;
         }
         .footer .links a {
             color: #667799;
             transition: color 0.2s;
         }
-        .footer .links a:hover {
-            color: #64b5f6;
-        }
+        .footer .links a:hover { color: #64b5f6; }
 
-        /* ===== 响应式 ===== */
-        @media (max-width: 900px) {
-            .navbar {
-                padding: 0 20px;
-            }
-            .nav-links {
-                position: fixed;
-                top: 68px;
-                left: 0;
-                width: 100%;
-                flex-direction: column;
-                background: rgba(10, 14, 26, 0.96);
-                backdrop-filter: blur(16px);
-                padding: 24px 20px;
-                gap: 20px;
-                transform: translateY(-110%);
-                transition: transform 0.35s;
-                border-bottom: 1px solid rgba(100, 180, 255, 0.08);
-            }
-            .nav-links.open {
-                transform: translateY(0);
-            }
-            .hamburger {
-                display: flex;
-            }
-            .quick-cards {
-                grid-template-columns: 1fr;
-            }
-            .intro-grid {
-                grid-template-columns: 1fr;
-            }
-            .intro-features {
-                grid-template-columns: 1fr;
-            }
-            .section {
-                padding: 60px 20px;
+        /* ========== 响应式布局 ========== */
+
+        /* 平板横屏 / 小笔记本 */
+        @media (max-width: 1100px) {
+            .download-card {
+                max-width: 95%;
+                padding: 40px 32px;
+                gap: 36px;
             }
         }
 
-        @media (max-width: 480px) {
-            .hero-actions {
+        /* 平板竖屏 — 卡片竖排 */
+        @media (max-width: 860px) {
+            .hero-bg {
+                background-attachment: scroll;
+            }
+            .hero { padding: 90px 12px 48px; }
+
+            .download-card {
                 flex-direction: column;
                 align-items: center;
+                padding: 32px 20px;
+                gap: 28px;
+                max-width: 520px;
             }
-            .btn {
+            .dl-left {
+                flex: none;
                 width: 100%;
-                justify-content: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
             }
-            .announcement-item {
-                padding: 20px;
-            }
+            .dl-right { width: 100%; }
+            .app-icon-wrap { width: 96px; height: 96px; border-radius: 22px; }
+            .app-title { font-size: 22px; }
+            .qr-section { display: flex; flex-direction: column; align-items: center; }
+
+            .cdk-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .dl-sub { flex-wrap: wrap; }
+            .dl-sub-btn { flex: 1 1 calc(33.3% - 8px); min-width: 90px; }
+            .announce-section { padding: 36px 12px 20px; }
+        }
+
+        /* 手机大屏 */
+        @media (max-width: 600px) {
+            .hero { padding: 76px 8px 36px; }
+            .download-card { padding: 24px 14px; gap: 20px; border-radius: 20px; }
+            .app-icon-wrap { width: 80px; height: 80px; border-radius: 18px; }
+            .app-title { font-size: 20px; }
+            .app-meta { font-size: 12px; line-height: 1.7; margin-bottom: 16px; }
+            .qr-section img { width: 80px; height: 80px; }
+
+            .dl-btn { padding: 13px 16px; font-size: 15px; }
+            .dl-sub-btn { flex: 1 1 100%; }
+            .reg-tip { font-size: 12px; padding: 10px 14px; }
+
+            .cdk-grid { grid-template-columns: 1fr; gap: 8px; }
+            .cdk-card { flex-wrap: wrap; padding: 10px 12px; }
+            .cdk-card .code { font-size: 13px; }
+            .cdk-card .desc { flex: 1 1 100%; order: 3; margin-top: 4px; font-size: 11px; }
+            .cdk-card .copy-btn { font-size: 11px; padding: 4px 10px; }
+
+            .announce-btn { padding: 14px 24px; font-size: 14px; width: 100%; justify-content: center; }
+        }
+
+        /* 手机小屏 */
+        @media (max-width: 400px) {
+            .hero { padding: 64px 6px 28px; }
+            .download-card { padding: 20px 10px; gap: 16px; }
+            .app-icon-wrap { width: 72px; height: 72px; }
+            .app-title { font-size: 18px; }
+            .dl-btn { padding: 12px 14px; font-size: 14px; }
+            .reg-tip { font-size: 11px; }
+            .cdk-card .code { font-size: 12px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== 星空背景 ===== -->
     <canvas id="stars-canvas"></canvas>
 
-    <!-- ===== 导航栏 ===== -->
-    <nav class="navbar">
-        <a href="#" class="logo">
-            <span class="logo-icon">&#9670;</span>
-            球球英雄
-        </a>
-        <ul class="nav-links" id="navLinks">
-            <li><a href="#home">首页</a></li>
-            <li><a href="#announcement">公告</a></li>
-        </ul>
-        <button class="hamburger" id="hamburger" aria-label="菜单">
-            <span></span><span></span><span></span>
-        </button>
-    </nav>
-
-    <!-- ===== Hero 首屏 ===== -->
     <section class="hero" id="home">
-        <span class="badge">&#9733; 现已正式上线</span>
-        <h1>
-            欢迎来到<br>
-            <span class="highlight">球球英雄</span>
-        </h1>
-        <p>
-            畅爽体验，全民竞技！海量福利、公平竞技，与万千玩家一起开启球球冒险之旅。
-        </p>
-        <a href="https://qm.qq.com/q/SE8wBMsHo4" class="hero-qq-group" target="_blank" rel="noopener">
-            <span class="qq-icon">Q</span>
-            <span class="qq-text">
-                <span class="label">加入QQ群</span>
-                <span class="number">1127734420</span>
-            </span>
-            <span class="qq-arrow">&#8594;</span>
-        </a>
-        <div class="hero-actions">
-            <a href="https://media.meilinvps.com/f.php?id=OgRl9byJHDDp.apk" class="btn btn-primary" rel="noopener">&#10515; 安卓下载</a>
-            <a href="http://b.myokcdn.ru/#/register?invite_code=zyg666" class="btn btn-outline" rel="noopener">&#9829; 游戏商城</a>
-            <a href="http://b.myokcdn.ru/#/register?invite_code=zyg666" class="btn btn-outline" rel="noopener">&#9998; 账号注册</a>
+        <div class="hero-bg"></div>
+
+        <div class="download-card">
+            <div class="dl-left">
+                <div class="app-icon-wrap">
+                    <img src="./images/app-icon.png" alt="球球英雄">
+                </div>
+                <div class="app-title">球球英雄</div>
+                <div class="app-meta">
+                    版本 19.3.0<br>
+                    大小 1725 MB<br>
+                    更新 <span id="today-date"></span>
+                </div>
+                <div class="qr-section">
+                    <img src="./images/qrcode.png" alt="扫码下载">
+                    <div class="tip">扫码下载</div>
+                </div>
+            </div>
+
+            <div class="dl-right">
+                <div class="notice-bar">
+                    <span class="notice-icon">⚠️</span>
+                    <span class="notice-text">账号需在本站注册 · 请点击下方「注册」按钮创建账号，商城购买也在本站完成</span>
+                </div>
+
+                <a href="https://media.meilinvps.com/f.php?id=OgRl9byJHDDp.apk"
+                   class="dl-btn android" rel="noopener">
+                    <span class="icon">&#x2b07;</span>
+                    <span>Android 下载</span>
+                </a>
+                <a href="itms-services://?action=download-manifest&url=https://xgame7.ru/qq2/qq.plist"
+                   class="dl-btn ios">
+                    <span class="icon">&#x2b07;</span>
+                    <span>iOS 下载</span>
+                </a>
+
+                <div class="dl-sub">
+                    <a href="https://qm.qq.com/q/SE8wBMsHo4" class="dl-sub-btn qq" target="_blank" rel="noopener">QQ群：1127734420</a>
+                    <a href="http://b.myokcdn.ru/#/register?invite_code=zyg666" class="dl-sub-btn" rel="noopener">商城</a>
+                    <a href="http://b.myokcdn.ru/#/register?invite_code=zyg666" class="dl-sub-btn" rel="noopener">注册</a>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="cdk-section">
+                    <div class="section-label">可用兑换码 · 一键复制</div>
+                    <div class="cdk-grid">
+                        <div class="cdk-card">
+                            <code class="code">GJQQ111</code>
+                            <span class="desc">点券×5888 · 全联动自选×4</span>
+                            <button class="copy-btn" onclick="copyCDK('GJQQ111')">复制</button>
+                        </div>
+                        <div class="cdk-card">
+                            <code class="code">GJQQ222</code>
+                            <span class="desc">钻石×98888 · 金币×128万</span>
+                            <button class="copy-btn" onclick="copyCDK('GJQQ222')">复制</button>
+                        </div>
+                        <div class="cdk-card">
+                            <code class="code">GJQQ333</code>
+                            <span class="desc">万能宝券×38 · 传说球球×18</span>
+                            <button class="copy-btn" onclick="copyCDK('GJQQ333')">复制</button>
+                        </div>
+                        <div class="cdk-card">
+                            <code class="code">GJQQSJFL</code>
+                            <span class="desc">点券×1888 · 进场宝箱×1</span>
+                            <button class="copy-btn" onclick="copyCDK('GJQQSJFL')">复制</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="announce-section">
+            <a href="https://a.myokcdn.ru/announcements.html?id=8" class="announce-btn" target="_blank" rel="noopener">
+                📢 查看最新公告
+                <span class="arrow">→</span>
+            </a>
         </div>
     </section>
 
-    <!-- ===== 公告 ===== -->
-    <section class="section" id="announcement">
-        <div class="section-title">
-            <h2>最新公告</h2>
-            <p>第一时间了解游戏动态</p>
-            <div class="accent-line"></div>
-        </div>
-        <div class="announcement-list">
-
-            <!-- ===== 自定义公告（置顶） ===== -->
-            <div class="announcement-item custom-top">
-                <div class="meta">
-                    <span class="tag hot">置顶</span>
-                    <span class="date">2026-09-25</span>
-                </div>
-                <h4>置顶兑换码</h4>
-                <p>新人福利 CDK：</p>
-                <div class="cdk-row">
-                    <code class="cdk-code">GJQQ111</code>
-                    <span class="cdk-desc">点券×5888，全联动自选×4（白糖球球除外），经验值×500（大退可显示）</span>
-                    <button class="copy-btn" onclick="copyCDK('GJQQ111')">复制</button>
-                </div>
-                <div class="cdk-row">
-                    <code class="cdk-code">GJQQ222</code>
-                    <span class="cdk-desc">钻石×98888，金币×1288888</span>
-                    <button class="copy-btn" onclick="copyCDK('GJQQ222')">复制</button>
-                </div>
-                <div class="cdk-row">
-                    <code class="cdk-code">GJQQ333</code>
-                    <span class="cdk-desc">万能宝券×38，传说球球随机×18，万能球球×8</span>
-                    <button class="copy-btn" onclick="copyCDK('GJQQ333')">复制</button>
-                </div>
-            </div>
-
-            <!-- ===== 官方公告 ===== -->
-            <div class="announcement-item">
-                <div class="meta">
-                    <span class="tag hot">置顶</span>
-                    <span class="date">2026-09-25</span>
-                </div>
-                <h4>补偿CDK以及节日兑换码新</h4>
-                <p>亲爱的球宝：</p>
-                <p>为弥补回档给各位玩家带来的影响，同时喜迎节日，现发放两组礼包兑换码，各位球宝可前往游戏内兑换领取。</p>
-                <p><strong>1. 回档补偿兑换码：HDBC0001</strong><br>
-                礼包内容：点券 ×688<br>
-                注意：该兑换码有效期仅 1 天，请大家尽快兑换。</p>
-                <p><strong>2. 节日专属兑换码：GJQQSJFL</strong><br>
-                礼包内容：点券 ×1888、进场动画自选宝箱 ×1、金币 ×888888<br>
-                兑换截止时间：10 月 9 日</p>
-                <p><strong>兑换规则：</strong>每个账号每个 CDK 仅可兑换一次，奖励兑换成功后通过游戏邮件发放，请留意邮件查收。请在有效期内完成兑换，过期将无法使用。</p>
-                <div class="cdk-row">
-                    <code class="cdk-code">HDBC0001</code>
-                    <span class="cdk-desc">回档补偿 · 点券 ×688（有效期1天）</span>
-                    <button class="copy-btn" onclick="copyCDK('HDBC0001')">复制</button>
-                </div>
-                <div class="cdk-row">
-                    <code class="cdk-code">GJQQSJFL</code>
-                    <span class="cdk-desc">节日专属 · 点券 ×1888+进场动画自选宝箱×1+金币×888888</span>
-                    <button class="copy-btn" onclick="copyCDK('GJQQSJFL')">复制</button>
-                </div>
-            </div>
-
-            <div class="announcement-item">
-                <div class="meta">
-                    <span class="tag event">活动</span>
-                    <span class="date">2026-09-24</span>
-                </div>
-                <h4># 国际球球英雄 中秋遇国庆双节活动公告</h4>
-                <p>亲爱的玩家：</p>
-                <p>喜迎双节，福利大放送！国际球球英雄限时活动正式开启，超多惊喜福利等你来领取，活动截止至 10 月 8 日，请各位玩家不要错过！</p>
-                <p><strong>双节专属免费 CDK 福利（限时兑换）</strong></p>
-                <p>专属福利兑换码来袭，每个账号仅限兑换 1 次！<br>
-                兑换有效期：2026/9/25 00:00:00 — 2026/10/8 00:00:00<br>
-                礼包奖励：</p>
-                <p>- 点券 × 1888<br>
-                - 进场特效大礼包 × 1<br>
-                - 金币 × 888888</p>
-                <p><strong>1、全新进场礼包限时上新</strong><br>
-                多款炫酷进场特效礼包限时开放选购，打造专属对局开场画面。</p>
-                <p><strong>2、角色大放送</strong><br>
-                59.9 元即可解锁全部角色，一键集齐，随心体验。</p>
-                <p><strong>3、特价花纹皮肤尊享</strong><br>
-                39.9 元可自选 10 款花纹<br>
-                69.9 元可获取全部花纹</p>
-                <p><strong>三档点券双倍充值</strong><br>
-                30元=1200点券<br>
-                98元=3920点券<br>
-                198元=8320点券<br>
-                998元=42176点券<br>
-                点券每人限购一次</p>
-                <p>【玩就玩的爽，皮肤一个不能落下！】</p>
-                <p>温馨提示：本次双节福利限时开放，活动截止至 10 月 8 日，活动结束后礼包与 CDK 兑换通道同步下架，请各位玩家把握福利机会。</p>
-            </div>
-
-            <div class="announcement-item">
-                <div class="meta">
-                    <span class="tag info">通知</span>
-                    <span class="date">2026-09-23</span>
-                </div>
-                <h4>目前所有卡BUG账号已经处置完毕，如有遗漏请联系代理反馈。</h4>
-                <p>由于排行榜数据被清除，以及对广大玩家造成的不好影响，现补偿CDK：GJQQBUGBC   点券X588  有效期一天</p>
-                <div class="cdk-row">
-                    <code class="cdk-code">GJQQBUGBC</code>
-                    <span class="cdk-desc">点券 × 588（有效期一天）</span>
-                    <button class="copy-btn" onclick="copyCDK('GJQQBUGBC')">复制</button>
-                </div>
-            </div>
-
-            <div class="announcement-item">
-                <div class="meta">
-                    <span class="tag update">通知</span>
-                    <span class="date">2026-09-22</span>
-                </div>
-                <h4>关于9-22号商城出现BUG问题通知</h4>
-                <p>由于商城BUG，所有充值过的玩家请反馈代理重新注册账号，代币按照比例返还，排行榜数据会清除。稍后发补偿CDK。</p>
-            </div>
-
-            <div class="announcement-item">
-                <div class="meta">
-                    <span class="tag info">补偿</span>
-                    <span class="date">2026-09-20</span>
-                </div>
-                <h4>为补偿下午账号丢失被删除数据的玩家，再次补偿2000点券，合计补偿3000点券。</h4>
-                <p>由于服务器磁盘的原因 今天 12:58:06～13:05:19期间登录的175个玩家的账号数据丢失，无法逆转所以 我们将他在游戏内的一切消费的道具经过核查全部补发进了邮箱，受影响账号的永久卡 月卡这些道具由于是每日领取所以无法补发但是我们给受影响的账号进行了领取时间重置的操作</p>
-                <p>对于此次造成损失的玩家，为补偿下午账号丢失被删除数据的玩家，再次补偿2000点券，合计补偿3000点券。点券是直接到账，其他商城购买所有物品都是拆分到账，每日消费，累充均到账了。</p>
-            </div>
-
-            <div class="announcement-item">
-                <div class="meta">
-                    <span class="tag update">修复</span>
-                    <span class="date">2026-09-15</span>
-                </div>
-                <h4>修复了神龙BUG，需要清除数据，重新热更新才会显示</h4>
-                <p>时间比较久，道歉什么都是假的，补偿码:GJQQBC01  点券X88</p>
-                <div class="cdk-row">
-                    <code class="cdk-code">GJQQBC01</code>
-                    <span class="cdk-desc">点券 × 88</span>
-                    <button class="copy-btn" onclick="copyCDK('GJQQBC01')">复制</button>
-                </div>
-            </div>
-
-            <div class="announcement-item">
-                <div class="meta">
-                    <span class="tag info">福利</span>
-                    <span class="date">2026-09-14</span>
-                </div>
-                <h4>内测通知</h4>
-                <p>新人福利CDK：</p>
-                <div class="cdk-row">
-                    <code class="cdk-code">GJQQ111</code>
-                    <span class="cdk-desc">点券 × 5888，全联动自选 × 4（白糖球球除外），经验值 × 500（大退可显示）</span>
-                    <button class="copy-btn" onclick="copyCDK('GJQQ111')">复制</button>
-                </div>
-                <div class="cdk-row">
-                    <code class="cdk-code">GJQQ222</code>
-                    <span class="cdk-desc">钻石 × 98888，金币 × 1288888</span>
-                    <button class="copy-btn" onclick="copyCDK('GJQQ222')">复制</button>
-                </div>
-                <div class="cdk-row">
-                    <code class="cdk-code">GJQQ333</code>
-                    <span class="cdk-desc">万能宝券 × 38，传说球球随机 × 18，万能球球 × 8</span>
-                    <button class="copy-btn" onclick="copyCDK('GJQQ333')">复制</button>
-                </div>
-                <p style="margin-top:10px;"><strong>【超级福利10元】</strong>永久每日领取：点券 ×88</p>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ===== 页脚 ===== -->
     <footer class="footer">
         <div class="links">
             <a href="#home">首页</a>
-            <a href="#announcement">公告</a>
+            <a href="https://a.myokcdn.ru/announcements.html?id=8" target="_blank" rel="noopener">公告</a>
+            <a href="https://qm.qq.com/q/SE8wBMsHo4" target="_blank" rel="noopener">QQ群</a>
         </div>
         <p>&copy; 2026 球球英雄. All Rights Reserved.</p>
     </footer>
 
     <script>
-        // ===== 星空粒子 =====
+        (function setBeijingDate() {
+            const el = document.getElementById('today-date');
+            if (!el) return;
+            const now = new Date();
+            const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+            const bj = new Date(utcMs + 8 * 3600 * 1000);
+            const y = bj.getFullYear();
+            const m = String(bj.getMonth() + 1).padStart(2, '0');
+            const d = String(bj.getDate()).padStart(2, '0');
+            el.textContent = `${y}-${m}-${d}`;
+        })();
+
         (function initStars() {
             const canvas = document.getElementById('stars-canvas');
             const ctx = canvas.getContext('2d');
             let stars = [];
             let w, h;
-
             function resize() {
                 w = canvas.width = window.innerWidth;
                 h = canvas.height = window.innerHeight;
             }
             window.addEventListener('resize', resize);
             resize();
-
-            const COUNT = 180;
-            for (let i = 0; i < COUNT; i++) {
+            for (let i = 0; i < 180; i++) {
                 stars.push({
                     x: Math.random() * w,
                     y: Math.random() * h,
@@ -1072,7 +582,6 @@
                     speed: Math.random() * 0.3 + 0.05,
                 });
             }
-
             function draw() {
                 ctx.clearRect(0, 0, w, h);
                 for (const s of stars) {
@@ -1091,36 +600,8 @@
             draw();
         })();
 
-        // ===== 移动端汉堡菜单 =====
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
-
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('open');
-        });
-
-        // 点击导航链接后关闭菜单
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('open');
-            });
-        });
-
-        // ===== 平滑滚动 (兼容) =====
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
-                if (href === '#') return;
-                e.preventDefault();
-                const target = document.querySelector(href);
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-        // ===== 复制兑换码 =====
         function copyCDK(code) {
-            navigator.clipboard.writeText(code).then(() => {
+            const showCopied = () => {
                 const btns = document.querySelectorAll('.copy-btn');
                 for (const btn of btns) {
                     if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(code)) {
@@ -1134,15 +615,21 @@
                         break;
                     }
                 }
-            }).catch(() => {
-                // 降级方案
+            };
+            const doCopy = () => {
                 const ta = document.createElement('textarea');
                 ta.value = code;
                 document.body.appendChild(ta);
                 ta.select();
                 document.execCommand('copy');
                 ta.remove();
-            });
+                showCopied();
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(code).then(showCopied).catch(doCopy);
+            } else {
+                doCopy();
+            }
         }
     </script>
 </body>
