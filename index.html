@@ -49,6 +49,7 @@
             background:
                 linear-gradient(rgba(10, 14, 26, 0.25), rgba(10, 14, 26, 0.45)),
                 url('./images/game-poster.png') center center / cover no-repeat;
+                url('./images/game-poster.webp') center center / cover no-repeat;
             pointer-events: none;
         }
 
@@ -603,8 +604,8 @@
         function copyCDK(code) {
             const showCopied = () => {
                 const btns = document.querySelectorAll('.copy-btn');
-                for (const btn of btns) {
-                    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(code)) {
+                对于 (常量btn在btns中){
+                    如果 (btn.getAttribute('onclick') && 按钮.getAttribute('onclick').包含(代码)) {
                         const original = btn.textContent;
                         btn.textContent = '已复制 ✓';
                         btn.classList.add('copied');
@@ -621,11 +622,11 @@
                 ta.value = code;
                 document.body.appendChild(ta);
                 ta.select();
-                document.execCommand('copy');
-                ta.remove();
-                showCopied();
+                文档.execCommand('复制');
+                ta.移除();
+                显示已复制();
             };
-            if (navigator.clipboard && navigator.clipboard.writeText) {
+            如果 (导航器.剪贴板 && 导航器.剪贴板.写入文本) {
                 navigator.clipboard.writeText(code).then(showCopied).catch(doCopy);
             } else {
                 doCopy();
