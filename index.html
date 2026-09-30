@@ -11,11 +11,7 @@
 
         body {
             font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
-            background:
-                radial-gradient(circle at 22% 18%, rgba(100, 180, 255, 0.10), transparent 42%),
-                radial-gradient(circle at 82% 72%, rgba(123, 97, 255, 0.13), transparent 46%),
-                radial-gradient(circle at 55% 30%, rgba(66, 230, 149, 0.06), transparent 52%),
-                #0a0e1a;
+            background: #0a0e1a;
             color: #e0e6f0;
             line-height: 1.6;
             overflow-x: hidden;
@@ -47,13 +43,6 @@
             align-items: center;
             justify-content: center;
         }
-        .hero-bg {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(1200px 700px at 50% 35%, rgba(100, 180, 255, 0.08), transparent 70%);
-            pointer-events: none;
-        }
-
         .download-card {
             position: relative;
             max-width: 1080px;
@@ -392,9 +381,6 @@
 
         /* 平板竖屏 — 卡片竖排 */
         @media (max-width: 860px) {
-            .hero-bg {
-                background-attachment: scroll;
-            }
             .hero { padding: 90px 12px 48px; }
 
             .download-card {
@@ -462,7 +448,6 @@
     <canvas id="stars-canvas"></canvas>
 
     <section class="hero" id="home">
-        <div class="hero-bg"></div>
 
         <div class="download-card">
             <div class="dl-left">
@@ -581,6 +566,15 @@
             window.addEventListener('resize', resize, { passive: true });
             window.addEventListener('orientationchange', resize, { passive: true });
             resize();
+            for (let i = 0; i < 180; i++) {
+                stars.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 1.6 + 0.3,
+                    a: Math.random() * 0.6 + 0.2,
+                    speed: Math.random() * 0.3 + 0.05,
+                });
+            }
             function draw() {
                 ctx.clearRect(0, 0, w, h);
                 for (const s of stars) {
@@ -633,11 +627,32 @@
                 copied = false;
             }
             ta.remove();
+            // 优先：在用户点击手势栈内同步执行 execCommand（移动端需要 textarea 在可视区域内）
+            const legacyCopy = () => {
+                const ta = document.createElement('textarea');
+                ta.value = code;
+                ta.setAttribute('readonly', '');
+                // 放在视口右下角但透明，确保移动端 select+execCommand 有效
+                ta.style.cssText = 'position:fixed;right:0;bottom:0;width:2em;height:2em;opacity:0;border:0;padding:0;margin:0;z-index:9999;';
+                document.body.appendChild(ta);
+                if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+                ta.focus();
+                ta.select();
+                ta.setSelectionRange(0, ta.value.length);
+                let copied = false;
+                try { copied = document.execCommand('copy'); } catch (e) { copied = false; }
+                document.body.removeChild(ta);
+                return copied;
+            };
 
             if (!copied && navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(code).then(showCopied).catch(showCopied);
             } else {
+            const pc = legacyCopy();
+            if (pc || !navigator.clipboard || !navigator.clipboard.writeText) {
                 showCopied();
+            } else {
+                navigator.clipboard.writeText(code).then(showCopied).catch(showCopied);
             }
         }
     </script>
