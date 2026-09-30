@@ -11,7 +11,11 @@
 
         body {
             font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
-            background: #0a0e1a;
+            background:
+                radial-gradient(circle at 22% 18%, rgba(100, 180, 255, 0.10), transparent 42%),
+                radial-gradient(circle at 82% 72%, rgba(123, 97, 255, 0.13), transparent 46%),
+                radial-gradient(circle at 55% 30%, rgba(66, 230, 149, 0.06), transparent 52%),
+                #0a0e1a;
             color: #e0e6f0;
             line-height: 1.6;
             overflow-x: hidden;
@@ -91,7 +95,7 @@
             50% { box-shadow: 0 0 0 2px rgba(123, 97, 255, 0.55), 0 0 32px rgba(123, 97, 255, 0.4), 0 0 56px rgba(0, 245, 212, 0.2); }
         }
         .app-title {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 800;
             letter-spacing: 2px;
             margin-bottom: 10px;
@@ -100,9 +104,9 @@
             -webkit-text-fill-color: transparent;
         }
         .app-meta {
-            font-size: 13px;
+            font-size: 15px;
             color: #7788aa;
-            line-height: 1.9;
+            line-height: 2;
             margin-bottom: 24px;
         }
         .qr-section img {
@@ -115,7 +119,7 @@
         }
         .qr-section .tip {
             margin-top: 8px;
-            font-size: 12px;
+            font-size: 13px;
             color: #667799;
         }
 
@@ -135,7 +139,7 @@
             width: 100%;
             padding: 14px 28px;
             border-radius: 50px;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             letter-spacing: 1px;
             color: #fff;
@@ -181,7 +185,7 @@
             flex: 1;
             padding: 10px 12px;
             border-radius: 10px;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 600;
             text-align: center;
             background: rgba(100, 180, 255, 0.08);
@@ -226,16 +230,16 @@
             0%, 100% { box-shadow: 0 0 0 0 rgba(255, 166, 0, 0.2); }
             50% { box-shadow: 0 0 18px 2px rgba(255, 166, 0, 0.35); }
         }
-        .notice-icon { font-size: 18px; flex-shrink: 0; }
+        .notice-icon { font-size: 20px; flex-shrink: 0; }
         .notice-text {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 600;
             color: #ffc97a;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .cdk-section .section-label {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 600;
             color: #64b5f6;
             letter-spacing: 1.5px;
@@ -246,7 +250,7 @@
         }
         .cdk-section .section-label::before {
             content: '🎁';
-            font-size: 14px;
+            font-size: 16px;
         }
         .cdk-grid {
             display: grid;
@@ -274,7 +278,7 @@
         }
         .cdk-card .code {
             font-family: 'Courier New', monospace;
-            font-size: 15px;
+            font-size: 17px;
             font-weight: 800;
             color: #42e695;
             background: rgba(66, 230, 149, 0.12);
@@ -285,7 +289,7 @@
             flex-shrink: 0;
         }
         .cdk-card .desc {
-            font-size: 11px;
+            font-size: 13px;
             color: #8899bb;
             flex: 1;
             line-height: 1.4;
@@ -298,7 +302,7 @@
         .cdk-card .copy-btn {
             flex-shrink: 0;
             padding: 4px 12px;
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 600;
             border: 1px solid rgba(66, 230, 149, 0.3);
             border-radius: 8px;
@@ -332,7 +336,7 @@
             background: linear-gradient(135deg, rgba(100, 180, 255, 0.12), rgba(66, 230, 149, 0.08));
             border: 1.5px solid rgba(100, 180, 255, 0.3);
             color: #88c0f0;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             letter-spacing: 2px;
             cursor: pointer;
@@ -359,7 +363,7 @@
             border-top: 1px solid rgba(100, 180, 255, 0.06);
             padding: 32px 24px;
             text-align: center;
-            font-size: 13px;
+            font-size: 15px;
             color: #445566;
         }
         .footer .links {
@@ -424,21 +428,21 @@
             .hero { padding: 76px 8px 36px; }
             .download-card { padding: 24px 14px; gap: 20px; border-radius: 20px; }
             .app-icon-wrap { width: 80px; height: 80px; border-radius: 18px; }
-            .app-title { font-size: 20px; }
-            .app-meta { font-size: 12px; line-height: 1.7; margin-bottom: 16px; }
+            .app-title { font-size: 22px; }
+            .app-meta { font-size: 14px; line-height: 1.8; margin-bottom: 16px; }
             .qr-section img { width: 80px; height: 80px; }
 
-            .dl-btn { padding: 13px 16px; font-size: 15px; }
+            .dl-btn { padding: 13px 16px; font-size: 17px; }
             .dl-sub-btn { flex: 1 1 100%; }
-            .reg-tip { font-size: 12px; padding: 10px 14px; }
+            .reg-tip { font-size: 13px; padding: 10px 14px; }
 
             .cdk-grid { grid-template-columns: 1fr; gap: 8px; }
-            .cdk-card { flex-wrap: wrap; padding: 10px 12px; }
-            .cdk-card .code { font-size: 13px; }
-            .cdk-card .desc { flex: 1 1 100%; order: 3; margin-top: 4px; font-size: 11px; }
-            .cdk-card .copy-btn { font-size: 11px; padding: 4px 10px; }
+            .cdk-card { flex-wrap: wrap; padding: 10px 12px; justify-content: space-between; align-items: center; }
+            .cdk-card .code { font-size: 15px; margin-right: auto; }
+            .cdk-card .desc { flex: 1 1 100%; order: 3; margin-top: 4px; font-size: 13px; }
+            .cdk-card .copy-btn { font-size: 12px; padding: 4px 10px; margin-left: auto; }
 
-            .announce-btn { padding: 14px 24px; font-size: 14px; width: 100%; justify-content: center; }
+            .announce-btn { padding: 14px 24px; font-size: 16px; width: 100%; justify-content: center; }
         }
 
         /* 手机小屏 */
@@ -446,10 +450,10 @@
             .hero { padding: 64px 6px 28px; }
             .download-card { padding: 20px 10px; gap: 16px; }
             .app-icon-wrap { width: 72px; height: 72px; }
-            .app-title { font-size: 18px; }
-            .dl-btn { padding: 12px 14px; font-size: 14px; }
-            .reg-tip { font-size: 11px; }
-            .cdk-card .code { font-size: 12px; }
+            .app-title { font-size: 20px; }
+            .dl-btn { padding: 12px 14px; font-size: 16px; }
+            .reg-tip { font-size: 12px; }
+            .cdk-card .code { font-size: 14px; }
         }
     </style>
 </head>
@@ -469,7 +473,7 @@
                 <div class="app-meta">
                     版本 19.3.0<br>
                     大小 1725 MB<br>
-                    更新 <span id="today-date"></span>
+                    更新 <span id="today-date">2026-10-01</span>
                 </div>
                 <div class="qr-section">
                     <img src="./images/qrcode.png" alt="扫码下载">
@@ -549,37 +553,34 @@
 
     <script>
         (function setBeijingDate() {
-            const el = document.getElementById('today-date');
-            if (!el) return;
             const now = new Date();
             const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
             const bj = new Date(utcMs + 8 * 3600 * 1000);
             const y = bj.getFullYear();
             const m = String(bj.getMonth() + 1).padStart(2, '0');
             const d = String(bj.getDate()).padStart(2, '0');
-            el.textContent = `${y}-${m}-${d}`;
+            const el = document.getElementById('today-date');
+            if (el) el.textContent = `${y}-${m}-${d}`;
         })();
 
         (function initStars() {
             const canvas = document.getElementById('stars-canvas');
+            if (!canvas || !canvas.getContext) return;
             const ctx = canvas.getContext('2d');
             let stars = [];
-            let w, h;
+            let w, h, dpr;
             function resize() {
-                w = canvas.width = window.innerWidth;
-                h = canvas.height = window.innerHeight;
+                dpr = window.devicePixelRatio || 1;
+                w = window.innerWidth || 1;
+                h = window.innerHeight || 1;
+                canvas.width = Math.max(1, Math.round(w * dpr));
+                canvas.height = Math.max(1, Math.round(h * dpr));
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                ctx.clearRect(0, 0, w, h);
             }
-            window.addEventListener('resize', resize);
+            window.addEventListener('resize', resize, { passive: true });
+            window.addEventListener('orientationchange', resize, { passive: true });
             resize();
-            for (let i = 0; i < 180; i++) {
-                stars.push({
-                    x: Math.random() * w,
-                    y: Math.random() * h,
-                    r: Math.random() * 1.6 + 0.3,
-                    a: Math.random() * 0.6 + 0.2,
-                    speed: Math.random() * 0.3 + 0.05,
-                });
-            }
             function draw() {
                 ctx.clearRect(0, 0, w, h);
                 for (const s of stars) {
@@ -601,8 +602,8 @@
         function copyCDK(code) {
             const showCopied = () => {
                 const btns = document.querySelectorAll('.copy-btn');
-                对于 (常量btn在btns中){
-                    如果 (btn.getAttribute('onclick') && btn.getAttribute('onclick').包含(代码)) {
+                for (const btn of btns) {
+                    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(code)) {
                         const original = btn.textContent;
                         btn.textContent = '已复制 ✓';
                         btn.classList.add('copied');
@@ -614,19 +615,29 @@
                     }
                 }
             };
-            const doCopy = () => {
-                const ta = document.createElement('textarea');
-                ta.value = code;
-                document.body.appendChild(ta);
-                ta.select();
-                文档.execCommand('复制');
-                ta.移除();
-                显示已复制();
-            };
-            如果 (导航器.剪贴板 && 导航器.剪贴板.写入文本) {
-                navigator.clipboard.writeText(code).then(showCopied).catch(doCopy);
+            // 同步执行 execCommand，确保在用户点击手势栈内，避免被浏览器拒绝
+            const ta = document.createElement('textarea');
+            ta.value = code;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'fixed';
+            ta.style.top = '-9999px';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            ta.setSelectionRange(0, ta.value.length); // 兼容移动端
+            let copied = false;
+            try {
+                copied = document.execCommand('copy');
+            } catch (e) {
+                copied = false;
+            }
+            ta.remove();
+
+            if (!copied && navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(code).then(showCopied).catch(showCopied);
             } else {
-                doCopy();
+                showCopied();
             }
         }
     </script>
